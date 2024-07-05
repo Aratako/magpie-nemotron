@@ -35,6 +35,7 @@ Magpieは、既存の大規模言語モデル（LLM）を使用して、高品�
     - `--assistant_max_tokens`: 応答の最大トークン数（デフォルト: 1024）
     - `--temperature`: 生成の温度（デフォルト: 1.0）
     - `--output_file`: 出力ファイル名（デフォルト: generated_conversations.jsonl）
+    - `--system_prompt`: システムプロンプト（デフォルト: 以下の難易度の高い質問に日本語で答えてください。）
 
 4. 生成されたデータセットは指定した出力ファイル（デフォルトでは `generated_conversations.jsonl`）に保存されます。
 
