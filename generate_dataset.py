@@ -79,7 +79,7 @@ def generate_conversation(
 def main(args):
     api_key = args.api_key
     if not api_key:
-        raise ValueError("DEEPINFRA_API_KEY environment variable is not set")
+        raise ValueError("deepinfra api key is not set")
 
     all_conversations = []
     total_cost = 0
