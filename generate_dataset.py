@@ -36,10 +36,10 @@ def generate_message(prompt, is_user_turn, api_key, max_tokens, temperature):
     return generated_text, cost
 
 
-def format_prompt(messages):
+def format_prompt(messages, system_prompt):
     if not messages:
-        return "<extra_id_0>System\n以下の難易度の高い質問に日本語で答えてください。\n<extra_id_1>User\n"
-    prompt = "<extra_id_0>System\n以下の難易度の高い質問に日本語で答えてください。\n"
+        return f"<extra_id_0>System\n{system_prompt}\n<extra_id_1>User\n"
+    prompt = f"<extra_id_0>System\n{system_prompt}\n"
     for message in messages:
         role = "User" if message["role"] == "user" else "Assistant"
         prompt += f"<extra_id_1>{role}\n{message['content']}\n"
@@ -55,6 +55,7 @@ def generate_conversation(
     user_max_tokens,
     assistant_max_tokens,
     temperature,
+    system_prompt,
 ):
     messages = []
     total_cost = 0
@@ -64,7 +65,7 @@ def generate_conversation(
         role = "user" if is_user_turn else "assistant"
         max_tokens = user_max_tokens if is_user_turn else assistant_max_tokens
 
-        prompt = format_prompt(messages)
+        prompt = format_prompt(messages, system_prompt)
         content, cost = generate_message(
             prompt, is_user_turn, api_key, max_tokens, temperature
         )
@@ -95,6 +96,7 @@ def main(args):
                 args.user_max_tokens,
                 args.assistant_max_tokens,
                 args.temperature,
+                args.system_prompt,
             ): i
             for i in range(args.target_count)
         }
@@ -156,6 +158,12 @@ if __name__ == "__main__":
         type=str,
         default="generated_conversations.jsonl",
         help="出力ファイル名",
+    )
+    parser.add_argument(
+        "--system_prompt",
+        type=str,
+        default="以下の難易度の高い質問に日本語で答えてください。",
+        help="システムプロンプト",
     )
 
     args = parser.parse_args()
